@@ -1,0 +1,190 @@
+---
+title: "Data Analysis 01"
+author: "Syed Hamed Raza"
+date: "3/15/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Load Libraries
+
+```{r cars}
+library(tidyverse)
+```
+
+### Load Dataset
+```{r}
+data <- read.csv("gapminder.csv")
+class(data)
+```
+
+### Convert "data.frame" to "tbl_df"
+```{r}
+df <- as_tibble(data)
+class(df)
+```
+
+### Structure of Data
+```{r}
+str(df)
+```
+### Change the Data Type
+```{r}
+df<-df %>% mutate(across(country, as.factor))
+df<-df %>% mutate(across(continent, as.factor))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Display DataFrame
+```{r}
+df
+```
+
+### head()
+```{r}
+head(df)
+```
+### tail()
+```{r}
+tail(df)
+```
+### name()
+```{r}
+names(df)
+```
+
+### ncol()
+```{r}
+ncol(df)
+```
+
+### length()
+```{r}
+length(df)
+```
+
+### dim()
+```{r}
+dim(df)
+```
+
+### nrow()
+```{r}
+nrow(df)
+```
+
+### summary()
+```{r}
+summary(df)
+```
+
+### plot(lifeExp ~ year, df)
+```{r}
+plot(lifeExp ~ year, df)
+```
+
+### plot(lifeExp ~ gdpPercap, df)
+```{r}
+plot(lifeExp ~ gdpPercap, df)
+```
+
+### plot(lifeExp ~ log(gdpPercap), df)
+```{r}
+plot(lifeExp ~ log(gdpPercap), df)
+```
+
+## Look at the variables inside a data frame
+### lifeExp
+
+```{r}
+head(df$lifeExp)
+```
+
+```{r}
+summary(df$lifeExp)
+```
+
+
+```{r}
+hist(df$lifeExp)
+```
+
+
+### year
+```{r}
+summary(df$year)
+```
+```{r}
+table(df$year)
+```
+### continent
+
+```{r}
+class(df$continent)
+```
+```{r}
+summary(df$continent)
+```
+
+
+```{r}
+levels(df$continent)
+```
+```{r}
+nlevels(df$continent)
+```
+```{r}
+str(df$continent)
+```
+```{r}
+table(df$continent)
+```
+
+
+```{r}
+barplot(table(df$continent))
+```
+
+```{r}
+## we exploit the fact that ggplot2 was installed and loaded via the tidyverse
+p <- ggplot(filter(df, continent != "Oceania"),
+            aes(x = gdpPercap, y = lifeExp)) # just initializes
+p <- p + scale_x_log10() # log the x axis the right way
+p + geom_point() # scatterplot
+p + geom_point(aes(color = continent)) # map continent to color
+p + geom_point(alpha = (1/3), size = 3) + geom_smooth(lwd = 3, se = FALSE)
+#> `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+p + geom_point(alpha = (1/3), size = 3) + facet_wrap(~ continent) +
+  geom_smooth(lwd = 1.5, se = FALSE)
+#> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
